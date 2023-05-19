@@ -16,10 +16,8 @@ const Footer = () => {
         F1TV when Traveling is an unofficial tool and is not associated in any
         way with the Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA
         FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trade
-        marks of Formula One Licensing BV. MultiViewer requires a paid F1TV
-        subscription and does&apos;nt help circumvent any content protection or
-        limitations by F1TV. MultiViewer is a non-commercial, fan-made
-        application. Data is used for non-commercial, fair use.
+        marks of Formula One Licensing BV. F1TV when Traveling is a
+        non-commercial, fan-made tool.
       </p>
       <p>
         All product and company names are trademarks™ or registered® trademarks
@@ -31,7 +29,7 @@ const Footer = () => {
         featured or referred to within the app are the property of their
         respective trademark holders. These trademark holders are not affiliated
         with F1TV when Traveling or its contributors. They do not sponsor or
-        endorse MultiViewer or any of our products.
+        endorse F1TV when Traveling or any of our products.
       </p>
 
       <p>
