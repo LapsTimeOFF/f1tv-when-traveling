@@ -1,95 +1,182 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import {
+  Container,
+  CssBaseline,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import { useState } from "react";
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+enum CountryType {
+  PRO_EU = "eu-pro",
+  ACCESS_EU = "eu-access",
+  PRO_NON_EU = "non-eu-pro",
+  ACCESS_NON_EU = "non-eu-access",
+  NO_F1TV = "no-f1tv",
+}
+
+enum ProResultType {
+  A = "You'll have access to the same content as your home country",
+  B = "You'll have access to the content that is available in the country you are visiting",
+  C = "You'll have access to F1TV Access content on only. The content you can access will match the country you are visiting",
+  NO = "You'll not have access to F1TV",
+}
+
+enum AccessResultType {
+  A = "You'll have access to F1TV Access content on only and this will be the same as your home country",
+  B = "You'll have access to F1TV Access content on only and you will only be able to access same features as the country you are visiting",
+  NO = "You'll not have access to F1TV",
+}
 
 export default function Home() {
+  const [origin, setOrigin] = useState<CountryType | null>(null);
+  const [dest, setDest] = useState<CountryType | null>(null);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container>
+        <Typography variant="h1">F1TV when traveling</Typography>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
+          <InputLabel id="demo-simple-select-helper-label">
+            Origin Country
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            label="Origin Country"
+            value={origin}
+            onChange={(e) => setOrigin(e.target.value as CountryType)}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <MenuItem value={CountryType.PRO_EU}>EU country with F1TV Pro</MenuItem>
+            <MenuItem value={CountryType.ACCESS_EU}>EU country with F1TV Access</MenuItem>
+            <MenuItem value={CountryType.PRO_NON_EU}>Non-EU country with F1TV Pro</MenuItem>
+            <MenuItem value={CountryType.ACCESS_NON_EU}>
+              Non-EU country with F1TV Access
+            </MenuItem>
+            <MenuItem value={CountryType.NO_F1TV}>Non-F1TV country</MenuItem>
+          </Select>
+          <FormHelperText>Where are you from?</FormHelperText>
+        </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 200 }}>
+          <InputLabel id="demo-simple-select-helper-label">
+            Destination Country
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            label="Destination Country"
+            value={dest}
+            onChange={(e) => setDest(e.target.value as CountryType)}
+          >
+            <MenuItem value={CountryType.PRO_EU}>EU country with F1TV Pro</MenuItem>
+            <MenuItem value={CountryType.ACCESS_EU}>EU country with F1TV Access</MenuItem>
+            <MenuItem value={CountryType.PRO_NON_EU}>Non-EU country with F1TV Pro</MenuItem>
+            <MenuItem value={CountryType.ACCESS_NON_EU}>
+              Non-EU country with F1TV Access
+            </MenuItem>
+            <MenuItem value={CountryType.NO_F1TV}>Non-F1TV country</MenuItem>
+          </Select>
+          <FormHelperText>Where are you going?</FormHelperText>
+        </FormControl>
+        {origin && dest ? (
+          <Typography variant="body1">{
+            (() => {
+              if(origin === CountryType.PRO_EU && dest === CountryType.PRO_EU) {
+                return ProResultType.A;
+              }
+              if(origin === CountryType.PRO_EU && dest === CountryType.PRO_NON_EU) {
+                return ProResultType.B;
+              }
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+              if(origin === CountryType.PRO_EU && dest === CountryType.ACCESS_EU) {
+                return ProResultType.A;
+              }
+              if(origin === CountryType.PRO_EU && dest === CountryType.ACCESS_NON_EU) {
+                return ProResultType.C;
+              }
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+              if(origin === CountryType.PRO_EU && dest === CountryType.NO_F1TV) {
+                return ProResultType.NO;
+              }
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+              // ------- \\
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+              if(origin === CountryType.PRO_NON_EU && dest === CountryType.PRO_EU) {
+                return ProResultType.B;
+              }
+              if(origin === CountryType.PRO_NON_EU && dest === CountryType.PRO_NON_EU) {
+                return ProResultType.B;
+              }
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+              if(origin === CountryType.PRO_NON_EU && dest === CountryType.ACCESS_EU) {
+                return ProResultType.C;
+              }
+              if(origin === CountryType.PRO_NON_EU && dest === CountryType.ACCESS_NON_EU) {
+                return ProResultType.C;
+              }
+
+              if(origin === CountryType.PRO_NON_EU && dest === CountryType.NO_F1TV) {
+                return ProResultType.NO;
+              }
+
+              // ------- \\
+
+              if(origin === CountryType.ACCESS_EU && dest === CountryType.PRO_EU) {
+                return AccessResultType.A;
+              }
+              if(origin === CountryType.ACCESS_EU && dest === CountryType.PRO_NON_EU) {
+                return AccessResultType.B;
+              }
+
+              if(origin === CountryType.ACCESS_EU && dest === CountryType.ACCESS_EU) {
+                return AccessResultType.A;
+              }
+              if(origin === CountryType.ACCESS_EU && dest === CountryType.ACCESS_NON_EU) {
+                return AccessResultType.B;
+              }
+
+              if(origin === CountryType.ACCESS_EU && dest === CountryType.NO_F1TV) {
+                return AccessResultType.NO;
+              }
+
+              // ------- \\
+
+              if(origin === CountryType.ACCESS_NON_EU && dest === CountryType.PRO_EU) {
+                return AccessResultType.B;
+              }
+              if(origin === CountryType.ACCESS_NON_EU && dest === CountryType.PRO_NON_EU) {
+                return AccessResultType.B;
+              }
+
+              if(origin === CountryType.ACCESS_NON_EU && dest === CountryType.ACCESS_EU) {
+                return AccessResultType.B;
+              }
+              if(origin === CountryType.ACCESS_NON_EU && dest === CountryType.ACCESS_NON_EU) {
+                return AccessResultType.B;
+              }
+
+              if(origin === CountryType.ACCESS_NON_EU && dest === CountryType.NO_F1TV) {
+                return AccessResultType.NO;
+              }
+            })()
+          }</Typography>
+        ) : (
+          <Typography variant="body1">Please fill every field</Typography>
+        )}
+      </Container>
+    </ThemeProvider>
+  );
 }
